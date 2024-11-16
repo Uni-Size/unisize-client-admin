@@ -1,0 +1,71 @@
+[
+  {
+    "year": "2023",
+    "middleSchools": [
+      {
+        "id": 1,
+        "name": "중학교 A"
+      },
+      {
+        "id": 2,
+        "name": "중학교 B"
+      }
+    ],
+    "highSchools": [
+      {
+        "id": 1,
+        "name": "고등학교 A"
+      },
+      {
+        "id": 2,
+        "name": "고등학교 B"
+      }
+    ]
+  },
+  {
+    "year": "2024",
+    "middleSchools": [
+      {
+        "id": 1,
+        "name": "중학교 A"
+      },
+      {
+        "id": 2,
+        "name": "중학교 B"
+      }
+    ],
+    "highSchools": [
+      {
+        "id": 1,
+        "name": "고등학교 A"
+      },
+      {
+        "id": 2,
+        "name": "고등학교 B"
+      }
+    ]
+  },
+  {
+    "year": "2025",
+    "middleSchools": [
+      {
+        "id": 1,
+        "name": "중학교 A"
+      },
+      {
+        "id": 2,
+        "name": "중학교 B"
+      }
+    ],
+    "highSchools": [
+      {
+        "id": 1,
+        "name": "고등학교 A"
+      },
+      {
+        "id": 2,
+        "name": "고등학교 B"
+      }
+    ]
+  }
+]

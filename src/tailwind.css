@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply font-sans box-border m-0 p-0;
+  }
+}
+@layer utilities {
+  .d1 {
+    @apply font-bold text-xl;
+  }
+  .d2 {
+    @apply font-semibold text-lg;
+  }
+  .h1 {
+    @apply font-bold text-3xl;
+  }
+  .h2 {
+    @apply font-bold text-2xl;
+  }
+  .h3 {
+    @apply font-semibold text-xl;
+  }
+  .h4 {
+    @apply font-medium text-lg;
+  }
+  .h5 {
+    @apply font-normal text-base;
+  }
+  .s1 {
+    @apply font-light text-sm;
+  }
+  .s2 {
+    @apply font-thin text-xs;
+  }
+  .b1 {
+    @apply font-bold text-lg;
+  }
+  .b2 {
+    @apply font-medium text-md;
+  }
+  .c1 {
+    @apply font-normal text-base;
+  }
+}
+@layer utilities {
+  .transition {
+    @apply transform transition-all duration-300;
+  }
+  button {
+    @apply flex items-center gap-2 px-4 py-2 rounded-md bg-blue-500 text-white;
+  }
+}
