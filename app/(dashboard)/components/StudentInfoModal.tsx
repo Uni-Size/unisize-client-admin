@@ -32,28 +32,71 @@ const style = {
 
 const purchaseInfoData: PurchaseInfoData = {
   winterUniform: {
-    jacket: { size: 100, quantity: 1, isNew: true },
-    blouse: { size: 100, quantity: 2, isNew: false },
-    shirt: { size: 95, quantity: 3, isNew: true },
-    knitVest: { size: 95, quantity: 1, isNew: false },
-    skirt: { size: 71, quantity: 2, isNew: true },
-    pants: { size: 74, quantity: 2, isNew: false },
-    gymTop: { size: 100, quantity: 1, isNew: true },
-    gymPants: { size: 100, quantity: 1, isNew: false },
+    jacket: {
+      size: 100,
+      name: "자켓",
+      quantity: 1,
+      isNew: true,
+    },
+    blouse: {
+      size: 100,
+      name: "블라우스",
+      quantity: 2,
+      isNew: false,
+    },
+    shirt: { size: 95, name: "셔츠", quantity: 3, isNew: true },
+    knitVest: {
+      size: 95,
+      name: "니트 조끼",
+      quantity: 1,
+      isNew: false,
+    },
+    skirt: { size: 71, name: "치마", quantity: 2, isNew: true },
+    pants: { size: 74, name: "바지", quantity: 2, isNew: false },
+    gymTop: {
+      size: 100,
+      name: "체육복 상의",
+      quantity: 1,
+      isNew: true,
+    },
+    gymPants: {
+      size: 100,
+      name: "체육복 하의",
+      quantity: 1,
+      isNew: false,
+    },
   },
   summerUniform: {
-    blouse: { size: 100, quantity: 2, isNew: true },
-    shirt: { size: 95, quantity: 3, isNew: false },
-    longPants: { size: 74, quantity: 2, isNew: true },
-    gymTop: { size: 100, quantity: 1, isNew: false },
-    gymPants: { size: 100, quantity: 1, isNew: true },
+    blouse: {
+      size: 100,
+      name: "블라우스",
+      quantity: 2,
+      isNew: true,
+    },
+    shirt: { size: 95, name: "셔츠", quantity: 3, isNew: false },
+    longPants: {
+      size: 74,
+      name: "긴 바지",
+      quantity: 2,
+      isNew: true,
+    },
+    gymTop: {
+      size: 100,
+      name: "체육복 상의",
+      quantity: 1,
+      isNew: false,
+    },
+    gymPants: {
+      size: 100,
+      name: "체육복 하의",
+      quantity: 1,
+      isNew: true,
+    },
   },
   namePlate: {
-    namePlate: 100,
-    attachedArray: {
-      winterUniform: ["jacket", "blouse", "shirt", "knitVest"],
-      summerUniform: ["blouse", "shirt", "longPants", "gymTop"],
-    },
+    quantity: 100,
+    winterUniform: ["jacket", "blouse", "shirt", "knitVest"],
+    summerUniform: ["blouse", "shirt", "longPants", "gymTop"],
   },
   supplies: {
     stockings: {
@@ -76,23 +119,7 @@ const purchaseInfoData: PurchaseInfoData = {
     },
   },
 };
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const winterUniformRows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 export default function StudentInfoModal({
   open,
   setOpen,
@@ -107,13 +134,42 @@ export default function StudentInfoModal({
     gender: "F",
     StudentPhone: "010.1234,5678",
   };
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
+  const winterUniformRows = Object.entries(purchaseInfoData.winterUniform).map(
+    ([key, value]) => ({
+      item: key,
+      name: value.name,
+      size: value.size,
+      isNew: value.isNew ? "" : " (이월)",
+      quantity: value.quantity,
+    }),
+  );
+  const summerUniformRows = Object.entries(purchaseInfoData.summerUniform).map(
+    ([key, value]) => ({
+      item: key,
+      name: value.name,
+      size: value.size,
+      isNew: value.isNew ? "" : " (이월)",
+      quantity: value.quantity,
+    }),
+  );
+  const suppliesUnderpantsRows = Object.entries(
+    purchaseInfoData.supplies?.underpants || {},
+  ).map(([key, value]) => ({
+    item: key,
+    quantity: value,
+  }));
+  const suppliesTshirtWhiteRows = Object.entries(
+    purchaseInfoData.supplies?.tshirt?.white || {},
+  ).map(([key, value]) => ({
+    item: key,
+    quantity: value,
+  }));
+  const suppliesTshirtBlackRows = Object.entries(
+    purchaseInfoData.supplies?.tshirt?.black || {},
+  ).map(([key, value]) => ({
+    item: key,
+    quantity: value,
+  }));
   return (
     <div>
       <Modal
@@ -151,29 +207,217 @@ export default function StudentInfoModal({
           </Stack>
           <Divider />
           <Box id="unstyled-modal-description" className="modal-description">
+            <Stack direction="row" spacing={2}>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>동복</TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {winterUniformRows.map((row) => (
+                      <TableRow
+                        key={row.item}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.name}
+                          {row.isNew}
+                        </TableCell>
+                        <TableCell align="right">{row.size}</TableCell>
+                        <TableCell align="right">{row.quantity}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>하복</TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {summerUniformRows.map((row) => (
+                      <TableRow
+                        key={row.item}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.name}
+                          {row.isNew}
+                        </TableCell>
+                        <TableCell align="right">{row.size}</TableCell>
+                        <TableCell align="right">{row.quantity}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      명찰
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {purchaseInfoData.namePlate.quantity}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      부착
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {(purchaseInfoData.namePlate.winterUniform?.length || 0) +
+                        (purchaseInfoData.namePlate.summerUniform?.length || 0)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              동복: {purchaseInfoData.namePlate.winterUniform?.join(", ")}{" "}
+              <br />
+              하복: {purchaseInfoData.namePlate.summerUniform?.join(", ")}
+            </TableContainer>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>동복</TableCell>
+                    <TableCell>살색스타킹</TableCell>
+                    <TableCell>유발스타킹</TableCell>
+                    <TableCell>무발스타킹</TableCell>
+                    <TableCell>기모스타킹</TableCell>
+                    <TableCell>속바지</TableCell>
+                    <TableCell>교복흰티</TableCell>
+                    <TableCell>교복검정티</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                  ))}
+                  <TableRow
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell align="right">
+                      <Stack
+                        direction="row"
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>one</div>
+                        <div>1</div>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Stack
+                        direction="row"
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>one</div>
+                        <div>1</div>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Stack
+                        direction="row"
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>one</div>
+                        <div>1</div>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Stack
+                        direction="row"
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>one</div>
+                        <div>1</div>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">
+                      {suppliesUnderpantsRows.map((row) => (
+                        <Stack
+                          key={row.item}
+                          direction="row"
+                          sx={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{row.item.toUpperCase()}</div>
+                          <div>{row.quantity}</div>
+                        </Stack>
+                      ))}
+                    </TableCell>
+                    <TableCell align="right">
+                      {suppliesTshirtWhiteRows.map((row) => (
+                        <Stack
+                          key={row.item}
+                          direction="row"
+                          sx={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{row.item.toUpperCase()}</div>
+                          <div>{row.quantity}</div>
+                        </Stack>
+                      ))}
+                    </TableCell>
+                    <TableCell align="right">
+                      {suppliesTshirtBlackRows.map((row) => (
+                        <Stack
+                          key={row.item}
+                          direction="row"
+                          sx={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>{row.item.toUpperCase()}</div>
+                          <div>{row.quantity}</div>
+                        </Stack>
+                      ))}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
+              </Table>
+            </TableContainer>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  이월사은품
+                  <TableRow
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      품목
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      개수
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
               </Table>
             </TableContainer>
           </Box>

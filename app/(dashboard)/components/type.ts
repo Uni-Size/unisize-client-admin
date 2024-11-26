@@ -6,6 +6,7 @@ export interface StudentInfoModalProp {
 
 interface UniformItem {
   size: number;
+  name: string;
   quantity: number;
   isNew: boolean;
 }
@@ -35,12 +36,9 @@ export interface PurchaseInfoData {
     gymPants?: UniformItem; //체육복 하의
   };
   namePlate: {
-    namePlate?: number; // 명찰 개수
-    attachedArray?: {
-      //명찰 부착 요청 품목
-      winterUniform: string[];
-      summerUniform: string[];
-    };
+    quantity?: number; // 명찰 개수
+    winterUniform?: string[];
+    summerUniform?: string[];
   };
   supplies: {
     stockings?: {
