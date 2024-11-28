@@ -8,7 +8,9 @@ import {
   GridRowsProp,
   GridColDef,
   GridCellParams,
+  GridRenderCellParams,
 } from "@mui/x-data-grid";
+import useGenderIcon from "../customHooks/useGenderIcon";
 const rows: GridRowsProp = [
   {
     id: 1,
@@ -40,10 +42,10 @@ export default function HomePage() {
     const value = params.value as number;
     return value;
   }, []);
-  const renderGenderCell = React.useCallback((params: GridCellParams) => {
-    const value = params.value as string;
-    return value === "M" ? <Male /> : <Female />;
-  }, []);
+  const GenderIconCell = (params: GridRenderCellParams) => {
+    const icon = useGenderIcon(params.value);
+    return <>{icon}</>;
+  };
   const renderUniformCell = React.useCallback((params: GridCellParams) => {
     const value = params.value as string;
     switch (value) {
@@ -85,7 +87,9 @@ export default function HomePage() {
         field: "col4",
         headerName: "성별",
         width: 80,
-        renderCell: renderGenderCell,
+        renderCell: (params: GridRenderCellParams) => (
+          <GenderIconCell {...params} />
+        ),
       },
       {
         field: "col5",
@@ -114,7 +118,7 @@ export default function HomePage() {
         },
       },
     ],
-    [renderGenderCell]
+    [],
   );
   return (
     <div>
