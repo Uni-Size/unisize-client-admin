@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
-import { Button, Chip, Box } from "@mui/material";
-import { Female, Male } from "@mui/icons-material";
+import { Button, Chip } from "@mui/material";
 import StudentInfoModal from "./components/StudentInfoModal";
 import {
   DataGrid,
@@ -66,7 +65,6 @@ export default function HomePage() {
   const handleOpenModal = (id: number) => {
     setOpen(true);
     setStudentId(id);
-    console.log(id);
   };
   const columns: GridColDef[] = React.useMemo(
     () => [

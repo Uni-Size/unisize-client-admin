@@ -2,12 +2,7 @@ import * as React from "react";
 import { AppProvider } from "@toolpad/core/nextjs";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import type { Navigation } from "@toolpad/core/AppProvider";
-import {
-  Timeline,
-  ShoppingCart,
-  Dashboard,
-  CalendarToday,
-} from "@mui/icons-material";
+import { Dashboard, CalendarToday } from "@mui/icons-material";
 
 import theme from "../theme";
 const NAVIGATION: Navigation = [
@@ -26,7 +21,7 @@ const NAVIGATION: Navigation = [
     icon: <CalendarToday />,
     children: [
       {
-        segment: "1",
+        segment: "1/students",
         title: "생명중학교",
       },
       {
