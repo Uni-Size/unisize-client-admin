@@ -5,7 +5,15 @@ import { PageContainer } from "@toolpad/core/PageContainer";
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <DashboardLayout>
-      <PageContainer>{props.children}</PageContainer>
+      <PageContainer
+        sx={{
+          "@media (min-width: 1200px)": {
+            maxWidth: "none",
+          },
+        }}
+      >
+        {props.children}
+      </PageContainer>
     </DashboardLayout>
   );
 }
