@@ -16,7 +16,9 @@
     "@mui/material": "^6.1.8",
     "@mui/material-nextjs": "^6",
     "@mui/x-data-grid": "^7.22.3",
+    "@mui/x-date-pickers": "^7.23.0",
     "@toolpad/core": "latest",
+    "dayjs": "^1.11.13",
     "next": "^15",
     "react": "^18",
     "react-dom": "^18"

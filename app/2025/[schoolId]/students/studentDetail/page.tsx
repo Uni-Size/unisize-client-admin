@@ -15,11 +15,18 @@ import {
   RadioGroup,
   Grid2 as Grid,
   Stack,
+  Tab,
 } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import WinterTab from "./WinterTab";
 
 export default function StudentDetails() {
+  const [value, setValue] = React.useState("1");
   const searchParams = useSearchParams();
   const studentId = searchParams.get("studentId");
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
   React.useEffect(() => {
     if (studentId) {
       console.log(`학생 ID: ${studentId}`); // 콘솔에서 ID 값 확인
@@ -131,6 +138,25 @@ export default function StudentDetails() {
               </Stack>
             </Grid>
           </Grid>
+        </Box>
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 2 }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
+                <Tab label="동복" value="1" />
+                <Tab label="하복" value="2" />
+                <Tab label="수선" value="3" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <WinterTab />
+            </TabPanel>
+            <TabPanel value="2">Item Two</TabPanel>
+            <TabPanel value="3">Item Three</TabPanel>
+          </TabContext>
         </Box>
       </Box>
     </Box>
