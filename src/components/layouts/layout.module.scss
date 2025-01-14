@@ -1,0 +1,19 @@
+.page_title__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search__container {
+  div {
+    display: flex;
+    align-items: center;
+
+    h4 {
+      flex-basis: 100px;
+    }
+
+    &:last-child {
+      flex-grow: 1;
+    }
+  }
+}
