@@ -2,10 +2,10 @@ import style from "./layout.module.scss";
 
 import Button from "../asset/Button";
 
-interface SearchLayoutProt {
+interface SearchLayoutProp {
   children: React.ReactNode;
 }
-export default function SearchLayout({ children }: SearchLayoutProt) {
+export default function SearchLayout({ children }: SearchLayoutProp) {
   return (
     <div className={style.search__container}>
       {children}

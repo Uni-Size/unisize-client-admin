@@ -49,7 +49,7 @@ export default function RootLayout({
             </nav>
             <div className={style.main__container__children}> {children}</div>
           </main>
-          <footer>ss</footer>
+          <footer>footer</footer>
         </div>
       </body>
     </html>
