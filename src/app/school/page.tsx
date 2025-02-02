@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageTitle from "@/components/layouts/PageTitle";
-import SearchLayout from "@/components/layouts/SearchLayout";
+import SearchLayout from "@/components/layouts/search-layout";
 import { useRouter } from "next/navigation";
 import style from "./style.module.scss";
-import ListLayout from "@/components/layouts/ListLayout";
+import ListLayout from "@/components/layouts/list-layout";
 import {
   createColumnHelper,
   flexRender,
@@ -12,39 +12,16 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Button from "@/components/asset/Button";
-
-type School = {
-  id: number;
-  schoolName: string;
-  createdAt: string;
-  updatedAt: string;
-  stock: number;
+import Button from "@/components/asset/button/Button";
+import { School } from "../api/getDummy/route";
+import useYears from "@/hooks/useYears";
+const getDummy = async (): Promise<School[]> => {
+  const response = await fetch("/api/getDummy");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
 };
-
-const mockSchoolData: School[] = [
-  {
-    id: 1,
-    schoolName: "용성중학교",
-    createdAt: "2024-01-15",
-    updatedAt: "2024-01-20",
-    stock: 150,
-  },
-  {
-    id: 2,
-    schoolName: "가경중학교",
-    createdAt: "2024-01-10",
-    updatedAt: "2024-01-18",
-    stock: 200,
-  },
-  {
-    id: 3,
-    schoolName: "생명중학교",
-    createdAt: "2024-01-05",
-    updatedAt: "2024-01-21",
-    stock: 175,
-  },
-];
 
 const columnHelper = createColumnHelper<School>();
 
@@ -54,7 +31,7 @@ const columns = [
     cell: (info) => info.getValue(),
     size: 50,
   }),
-  columnHelper.accessor("schoolName", {
+  columnHelper.accessor("school", {
     header: "학교명",
     cell: (info) => info.getValue(),
   }),
@@ -68,7 +45,11 @@ const columns = [
   }),
   columnHelper.accessor("stock", {
     header: "재고",
-    cell: (info) => info.getValue(),
+    cell: (info) => (
+      <Button onClick={() => console.log(info.getValue())}>
+        {info.getValue()}
+      </Button>
+    ),
   }),
   columnHelper.display({
     id: "actions",
@@ -80,13 +61,26 @@ const columns = [
 
 export default function Page() {
   const router = useRouter();
+  const [data, setData] = useState<School[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const yearsArr = useYears();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getDummy();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handlerClickTitleBTN = () => {
     router.push("/student/add");
   };
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - 3 + i);
-
-  const [data, _setData] = useState(() => [...mockSchoolData]);
 
   const table = useReactTable({
     data,
@@ -99,6 +93,10 @@ export default function Page() {
       },
     },
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -117,7 +115,7 @@ export default function Page() {
         <div>
           <h4>주관구매</h4>
           <div className={style.search__checkbox}>
-            {years.map((year) => (
+            {yearsArr.map((year) => (
               <label key={year}>
                 <input type="checkbox" name="year" value={year} />
                 {year}
@@ -126,13 +124,9 @@ export default function Page() {
           </div>
         </div>
       </SearchLayout>
-      <ListLayout searchTotal={10}>
+      <ListLayout searchTotal={data.length}>
         <div>
-          <table
-            style={{
-              width: `100%`,
-            }}
-          >
+          <table style={{ width: "100%" }}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -178,22 +172,6 @@ export default function Page() {
                 </tr>
               ))}
             </tbody>
-            <tfoot>
-              {table.getFooterGroups().map((footerGroup) => (
-                <tr key={footerGroup.id}>
-                  {footerGroup.headers.map((header) => (
-                    <th key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.footer,
-                            header.getContext()
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </tfoot>
           </table>
         </div>
       </ListLayout>

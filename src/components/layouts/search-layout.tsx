@@ -1,6 +1,5 @@
 import style from "./layout.module.scss";
-
-import Button from "../asset/Button";
+import Button from "../asset/button/Button";
 
 interface SearchLayoutProp {
   children: React.ReactNode;
